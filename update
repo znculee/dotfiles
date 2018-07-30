@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd $(dirname $0)
+
+git add -A
+git commit --amend  -m ':tada:' -q
+git push -f --progress

@@ -1,0 +1,16 @@
+#!/bin/bash
+#Lanuch [reveal.js](https://github.com/hakimel/reveal.js)
+
+if [ $# -ne 1 ]; then
+    echo "Only accept one html file."
+fi
+
+FILE=`readlink -f $1`
+
+if [ ${FILE: -5} != ".html" ] ; then
+    echo "This is not a markdown file."
+else
+    ln -sf $FILE ~/data/tools/reveal.js/index.html
+    cd ~/data/tools/reveal.js
+    npm start
+fi

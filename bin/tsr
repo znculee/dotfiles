@@ -1,0 +1,3 @@
+#!/bin/bash
+
+date -r $(printf '%d\n' 0x$1)

@@ -1,0 +1,33 @@
+#!/bin/bash
+
+ROOT=~/repos
+
+REPOS=$(find $ROOT -name .git -type d -prune)
+echo "$REPOS" | while IFS= read -r REPO; do
+
+  REPO=$(dirname $REPO)
+  cd $REPO
+
+  STATUSES=$(git status -sb)
+  BRANCH_INFO=$(echo $STATUSES | head -n 1)
+  BRANCH_STATUS=$(echo $BRANCH_INFO | cut -d' ' -f3-)
+  STATUSES=$(echo "$STATUSES" | tail -n +2)
+
+  if [ -n "$STATUSES" ] || [ -n "$BRANCH_STATUS" ]; then
+    echo $CLEAN
+    echo "==> $(pwd) <=="
+
+    if [ -n "$BRANCH_STATUS" ]; then
+      echo "$BRANCH_INFO"
+    fi
+
+    if [ -n "$STATUSES" ]; then
+      echo "$STATUSES" | while IFS= read -r STATUS; do
+        echo $STATUS
+      done
+    fi
+
+    echo
+  fi
+
+done

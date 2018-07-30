@@ -1,0 +1,3 @@
+history -c;
+pkg prefix ~/data/tools/octave_packages ~/data/tools/octave_packages;
+PS1('>> ')

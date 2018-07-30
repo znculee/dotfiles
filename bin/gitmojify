@@ -1,0 +1,242 @@
+#!/usr/bin/env bash
+# Adapted from https://github.com/mrowa44/emojify
+
+# https://gitmoji.carloscuesta.me
+declare -A gitmojis=(
+  [":alembic:"]="\U2697\Ufe0f "
+  [":alien:"]="\U1f47d"
+  [":ambulance:"]="\U1f691"
+  [":apple:"]="\U1f34e"
+  [":arrow_down:"]="\U2b07\Ufe0f "
+  [":arrow_up:"]="\U2b06\Ufe0f "
+  [":art:"]="\U1f3a8"
+  [":beers:"]="\U1f37b"
+  [":bento:"]="\U1f371"
+  [":bookmark:"]="\U1f516"
+  [":boom:"]="\U1f4a5"
+  [":bug:"]="\U1f41b"
+  [":building_construction:"]="\U1f3d7\Ufe0f "
+  [":bulb:"]="\U1f4a1"
+  [":busts_in_silhouette:"]="\U1f465"
+  [":camera_flash:"]="\U1f4f8"
+  [":card_file_box:"]="\U1f5c3\Ufe0f "
+  [":chart_with_upwards_trend:"]="\U1f4c8"
+  [":checkered_flag:"]="\U1f3c1"
+  [":children_crossing:"]="\U1f6b8"
+  [":clown_face:"]="\U1f921"
+  [":construction:"]="\U1f6a7"
+  [":construction_worker:"]="\U1f477"
+  [":dizzy:"]="\U1f4ab"
+  [":egg:"]="\U1f95a"
+  [":fire:"]="\U1f525"
+  [":globe_with_meridians:"]="\U1f310"
+  [":goal_net:"]="\U1f945"
+  [":green_apple:"]="\U1f34f"
+  [":green_heart:"]="\U1f49a"
+  [":heavy_minus_sign:"]="\U2796"
+  [":heavy_plus_sign:"]="\U2795"
+  [":iphone:"]="\U1f4f1"
+  [":label:"]="\U1f3f7\Ufe0f "
+  [":lipstick:"]="\U1f484"
+  [":lock:"]="\U1f512"
+  [":loud_sound:"]="\U1f50a"
+  [":mag:"]="\U1f50d"
+  [":mute:"]="\U1f507"
+  [":ok_hand:"]="\U1f44c"
+  [":package:"]="\U1f4e6"
+  [":page_facing_up:"]="\U1f4c4"
+  [":pencil2:"]="\U270f\Ufe0f "
+  [":pencil:"]="\U1f4dd"
+  [":penguin:"]="\U1f427"
+  [":poop:"]="\U1f4a9"
+  [":pushpin:"]="\U1f4cc"
+  [":recycle:"]="\U267b\Ufe0f "
+  [":rewind:"]="\U23ea"
+  [":robot:"]="\U1f916"
+  [":rocket:"]="\U1f680"
+  [":rotating_light:"]="\U1f6a8"
+  [":see_no_evil:"]="\U1f648"
+  [":seedling:"]="\U1f331"
+  [":sparkles:"]="\U2728"
+  [":speech_balloon:"]="\U1f4ac"
+  [":tada:"]="\U1f389"
+  [":triangular_flag_on_post:"]="\U1f6a9"
+  [":truck:"]="\U1f69a"
+  [":twisted_rightwards_arrows:"]="\U1f500"
+  [":wastebasket:"]="\U1f5d1\Ufe0f "
+  [":whale:"]="\U1f433"
+  [":wheel_of_dharma:"]="\U2638\Ufe0f "
+  [":wheelchair:"]="\U267f"
+  [":white_check_mark:"]="\U2705"
+  [":wrench:"]="\U1f527"
+  [":zap:"]="\U26a1"
+)
+
+declare -A gitmoji_types=(
+  [":alembic:"]="experimenting new things"
+  [":alien:"]="updating code due to external API changes"
+  [":ambulance:"]="critical hotfix"
+  [":apple:"]="fixing something on macOS"
+  [":arrow_down:"]="downgrading dependencies"
+  [":arrow_up:"]="upgrading dependencies"
+  [":art:"]="improving structure / format of the code"
+  [":beers:"]="writing code drunkenly"
+  [":bento:"]="adding or updating assets"
+  [":bookmark:"]="releasing / Version tags"
+  [":boom:"]="introducing breaking changes"
+  [":bug:"]="fixing a bug"
+  [":building_construction:"]="making architectural changes"
+  [":bulb:"]="documenting source code"
+  [":busts_in_silhouette:"]="adding contributor(s)"
+  [":camera_flash:"]="adding or updating snapshots"
+  [":card_file_box:"]="performing database related changes"
+  [":chart_with_upwards_trend:"]="adding analytics or tracking code"
+  [":checkered_flag:"]="fixing something on Windows"
+  [":children_crossing:"]="improving user experience / usability"
+  [":clown_face:"]="mocking things"
+  [":construction:"]="work in progress"
+  [":construction_worker:"]="adding CI build system"
+  [":dizzy:"]="adding or updating animations and transitions"
+  [":egg:"]="adding an easter egg"
+  [":fire:"]="removing code or files"
+  [":globe_with_meridians:"]="internationalization and localization"
+  [":goal_net:"]="catching errors"
+  [":green_apple:"]="fixing something on IOS"
+  [":green_heart:"]="fixing CI Build"
+  [":heavy_minus_sign:"]="removing a dependency"
+  [":heavy_plus_sign:"]="adding a dependency"
+  [":iphone:"]="working on responsive design"
+  [":label:"]="adding or updating types (Flow, TypeScript)"
+  [":lipstick:"]="updating the UI and style files"
+  [":lock:"]="fixing security issues"
+  [":loud_sound:"]="adding logs"
+  [":mag:"]="improving SEO"
+  [":mute:"]="removing logs"
+  [":ok_hand:"]="updating code due to code review changes"
+  [":package:"]="updating compiled files or packages"
+  [":page_facing_up:"]="adding or updating license"
+  [":pencil2:"]="fixing typos"
+  [":pencil:"]="writing docs"
+  [":penguin:"]="fixing something on Linux"
+  [":poop:"]="writing bad code that needs to be improved"
+  [":pushpin:"]="pinning dependencies to specific versions"
+  [":recycle:"]="refactoring code"
+  [":rewind:"]="reverting changes"
+  [":robot:"]="fixing something on Android"
+  [":rocket:"]="deploying stuff"
+  [":rotating_light:"]="removing linter warnings"
+  [":see_no_evil:"]="adding or updating a .gitignore file"
+  [":seedling:"]="adding or updating seed files"
+  [":sparkles:"]="introducing new features"
+  [":speech_balloon:"]="updating text and literals"
+  [":tada:"]="initial commit"
+  [":triangular_flag_on_post:"]="adding, updating, or removing feature flags"
+  [":truck:"]="moving or renaming files"
+  [":twisted_rightwards_arrows:"]="merging branches"
+  [":wastebasket:"]="deprecating code that needs to be cleaned up"
+  [":whale:"]="work about Docker"
+  [":wheel_of_dharma:"]="work about Kubernetes"
+  [":wheelchair:"]="improving accessibility"
+  [":white_check_mark:"]="updating tests"
+  [":wrench:"]="changing configuration files"
+  [":zap:"]="improving performance"
+)
+
+# Gets emoji from the associative array
+# Returns raw emoji character or original token
+emojify_token () {
+  local value=${gitmojis[$1]}
+  [[ -n $value ]] && echo -e "$value" || echo "$1"
+}
+
+# Function to emojify a line.
+emojify_line () {
+  line=$*
+  current_token=""
+  emojified_line=""
+  for (( i=0; i<${#line}; i++ )); do
+    current_char="${line:$i:1}"
+
+    if [[ -z "$current_token" ]]; then
+      # starting a new token.
+      if [[ $current_char =~ ^:$ ]]; then
+          current_token+=$current_char
+      # not starting a new token.
+      else
+          emojified_line+=$current_char
+      fi
+    else
+      # finishing the current token.
+      if [[ $current_char =~ ^:$ ]]; then
+        emojified_token=$(emojify_token "$current_token$current_char")
+
+        # nothing changed. we still need the ending ':' as it might
+        # serve for an upcoming emoji
+        if [[ "$emojified_token" == "$current_token$current_char" ]]; then
+          emojified_line+=$current_token
+          current_token=$current_char
+        else
+          emojified_line+=$emojified_token
+          current_token=""
+        fi
+      # continuing the current token.
+      elif [[ $current_char =~ ^[a-zA-Z0-9_+-]$ ]]; then
+        current_token+=$current_char
+      # dropping the current token.
+      else
+        current_token+=$current_char
+        emojified_line+=$current_token
+        current_token=""
+      fi
+    fi
+  done
+  emojified_line+=$current_token
+  echo "$emojified_line"
+}
+
+help () {
+  cat <<EOF
+  gitmojify - gitmoji on the command line
+  USAGE: gitmojify [-h|--help] [-l|--list] TEXT
+EOF
+    exit 0
+}
+
+list () {
+  for key in "${!gitmojis[@]}"; do
+    echo -e "$key~${gitmoji_types[$key]}~${gitmojis[$key]}"
+  done | sort | column -t -s "~"
+  exit 0
+}
+
+# Checks the installed bash version to see if it's compatible with gitmojify
+check_version () {
+    if (( ${BASH_VERSION%%.*} >= 4 )); then
+        return
+    else
+        echo -e "Please use bash 4.0 or greater."
+        exit 0
+    fi
+}
+
+# If arguments are provided on the command line then check for supported help
+# options or process the arguments as emoji names.
+if [[ -n $1 ]]; then
+  case $1 in
+  '-h' | '--help' )
+    help
+    ;;
+  '-l' | '--list' )
+    list
+    ;;
+  * )
+    check_version
+    emojify_line "$*"
+    ;;
+  esac
+else
+  check_version
+  while IFS=''; read -r line || [ -n "$line" ]; do
+    emojify_line "$line"
+  done
+fi

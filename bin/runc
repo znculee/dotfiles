@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+# Run C++ as a script
+
+DEBUG=0
+
+while getopts "g" arg; do
+  case $arg in
+    g)
+      DEBUG=1
+      ;;
+  esac
+done
+shift $(($OPTIND-1))
+
+mkdir -p ~/tmp
+TMPFILE=$(mktemp ~/tmp/c.XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX)
+
+if [ $DEBUG -eq 0 ]; then
+  clang++ $1 -o $TMPFILE
+  $TMPFILE
+else
+  clang++ -g $1 -o $TMPFILE
+  lldb $TMPFILE
+fi
+
+rm -rf $TMPFILE*

@@ -1,0 +1,325 @@
+%! TEX program = pdflatex
+
+\documentclass[
+%aspectratio=169, % 1610, 169, 149, 141, 54, 43, 32
+%handout,
+]{beamer}
+
+\usetheme[
+%dark, % dark mode
+%grid, % show grid
+%note, % show notes
+outline, % show running outlines after \section
+]{xtli}
+
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\pgfplotsset{compat=1.16}
+
+\title{There Is No Largest Prime Number}
+\subtitle{Subtitle}
+\author{Euclid of Alexandria}
+\date{27th International Symposium of Prime Numbers}
+
+\begin{document}
+
+\begin{frame}[noframenumbering,plain]
+\titlepage
+\end{frame}
+
+\begin{frame}[noframenumbering,plain]
+\frametitle{Outline}
+\tableofcontents
+\end{frame}
+
+\section{Motivation}
+\subsection{The Basic Problem That We Studied}
+
+\begin{frame}
+\frametitle{What Are Prime Numbers?}
+\begin{definition}
+  A \alert{prime number} is a number that has exactly two divisors.
+\end{definition}
+\begin{example}
+  \begin{itemize}
+    \item 2 is prime (two divisors: 1 and 2).
+      \pause
+    \item 3 is prime (two divisors: 1 and 3).
+      \pause
+    \item 4 is not prime (\alert{three} divisors: 1, 2, and 4).
+  \end{itemize}
+\end{example}
+\markerlessfootnote{More primer numbers: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, ...}
+\end{frame}
+
+\begin{frame}[t]
+\frametitle{There Is No Largest Prime Number}
+\framesubtitle{The proof uses \textit{reductio ad absurdum}.}
+\begin{theorem}[c. 300 BC]
+  There is no largest prime number.~\footnote{This is a footnote.}
+\end{theorem}
+\begin{proof}
+  \begin{enumerate}
+    \item<1-> Suppose $p$ were the largest prime number.
+    \item<2-> Let $q$ be the product of the first $p$ numbers.
+    \item<3-> Then $q + 1$ is not divisible by any of them.
+    \item<1-> But $q + 1$ is greater than $1$, thus divisible by some prime
+      number not in the first $p$ numbers.\qedhere
+  \end{enumerate}
+\end{proof}
+\uncover<4->{The proof used \textit{reductio ad absurdum}.}
+\end{frame}
+
+\begin{frame}
+\frametitle{What’s Still To Do?}
+\begin{columns}[t]
+  \column{.5\textwidth}
+  \begin{block}{Answered Questions}
+    How many primes are there?
+    \footnote[frame]{A test footnote in the first column.}
+  \end{block}
+  \pause
+  \column{.5\textwidth}
+  \begin{block}{Open Questions}
+    Is every even number the sum of two primes?
+    \footnote[frame]{A test footnote in the second column.}
+  \end{block}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{An Algorithm For Finding Prime Numbers.}
+\begin{semiverbatim}
+int main (void) \{
+  \alert<2>{std::}vector<bool> is_prime (100, true);
+      for (int i = 2; i < 100; i++)
+        if (is_prime[i]) \{
+          \alert<2>{std::}cout << i << " ";
+          for (int j = i; j < 100;
+            is_prime [j] = false, j+=i);
+        \}
+  return 0;
+\}
+\end{semiverbatim}
+\visible<2>{
+  \begin{alertblock}{}
+    Note the use of \alert{\texttt{std::}}.
+  \end{alertblock}
+}
+\end{frame}
+
+\section{Second Section}
+
+\begin{frame}
+\frametitle{List}
+\pdfnote{%
+My presentation notes.\textCR
+Notes in the second line.
+}
+\begin{columns}[t]
+\column{.5\textwidth}
+\begin{itemize}
+  \item XXX
+  \begin{itemize}
+    \item XXX
+    \item XXX
+      \begin{itemize}
+        \item XXX
+      \end{itemize}
+  \end{itemize}
+  \item XXX~\cite{vaswani2017attention}
+  \item XXX
+\end{itemize}
+\column{.5\textwidth}
+\begin{enumerate}
+  \item XXX
+  \begin{enumerate}
+    \item XXX
+    \item XXX
+      \begin{enumerate}
+        \item XXX
+      \end{enumerate}
+  \end{enumerate}
+  \item XXX
+  \item XXX
+\end{enumerate}
+\end{columns}
+\begin{tikzpicture}[remember picture, overlay, shift={(current page.center)}]
+  \tikzstyle{Box} = [rectangle, rounded corners, align=center, draw=c4fg];
+  \tikzstyle{Callout} = [ellipse callout, draw=c4fg];
+  \tikzstyle{Arrow} = [-{Latex[scale=1]}, thick];
+  \node[Box] at (0,0) (org) {position\\(0,0)};
+  \node[Box] at (5,3) {position\\(5,3)};
+  \node[Callout, callout absolute pointer={($(org)+(-0.8,-0.8)$)}, position=225:2 from org] {polar coordinates};
+  \node[Callout, callout absolute pointer={(-5.1,1.2)}] at (-4,2) {itemize};
+  \node[Callout, callout absolute pointer={(0.9,1.2)}] at (2,2) {enumerate};
+  \draw[Arrow] (2,-3) to node[pos=0.5, above, sloped] {Arrow} (4,-2);
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+\frametitle{Pictures with TikZ~\cite{tantau2008tikz}}
+\begin{center}
+\begin{tikzpicture}[
+  scale=1.5,
+  dot/.style={circle,draw=c4fg,fill=c4fg,thick,inner sep=0pt,minimum size=2pt},
+  background rectangle/.style={fill=c4bg},
+  show background rectangle
+]
+  \draw[c4fg!30!c4bg] (-1.5,0) -- (1.5,0);
+  \draw[c4fg!30!c4bg] (0,-1.5) -- (0,1.5);
+  \node[dot] at (-1,0) (n1) {};
+  \node[dot] at (0,1)  (n2) {};
+  \node[dot] at (1,0)  (n3) {};
+  \node[dot] at (0,-1) (n4) {};
+  \draw[c4fg,thick] (n1) -- (n2) -- (n3) -- (n4) -- (n1) -- cycle;
+  \draw[c4al,thick] (-1,0.5) -- (0,1) -- (1,1.5);
+\end{tikzpicture}
+\qquad
+\begin{tikzpicture}[
+  scale=1.5,
+  background rectangle/.style={fill=c4bg},
+  show background rectangle
+]
+  \draw[c4fg!30!c4bg] (-1.5,0) -- (1.5,0);
+  \draw[c4fg!30!c4bg] (0,-1.5) -- (0,1.5);
+  \draw[c4fg,thick] (-1,1) -- (0,0) -- (1,1);
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Bar Chart with TikZ}
+\begin{center}
+\begin{tikzpicture}
+    \begin{axis}[
+        ybar,
+        enlarge x limits=0.15,
+        ymin=50,
+        ymax=100,
+        legend style={
+            at={(0.5,-0.15)},
+            anchor=north,
+            legend columns=-1,
+            draw=none,
+            fill=c4bg,
+        },
+        axis line style={draw=none},
+        tick style={draw=none},
+        ymajorgrids,
+        symbolic x coords={TreeAcc,Gram,Corr,Disc},
+        xtick={TreeAcc,Gram,Corr,Disc},
+        width=\textwidth,
+        height=0.618\textwidth,
+    ]
+        \addplot[fill=c4st!30!c4bg] coordinates {(TreeAcc,nan) (Gram,98.77) (Corr,77.09) (Disc,79.04)};
+        \addplot[fill=c4fg!30!c4bg] coordinates {(TreeAcc,nan) (Gram,96.7) (Corr,81.56) (Disc,83.93)};
+        \addplot[fill=c4al!30!c4bg] coordinates {(TreeAcc,92.5) (Gram,95.26) (Corr,87.61) (Disc,85.97)};
+        \addplot[fill=c4eg!30!c4bg] coordinates {(TreeAcc,96.92) (Gram,95.30) (Corr,91.82) (Disc,93.44)};
+        \legend{\textsc{Flat},\textsc{Token},\textsc{Tree},\textsc{Constr}}
+    \end{axis}
+\end{tikzpicture}
+\end{center}
+\visible<2>{
+\begin{tikzpicture}[remember picture, overlay, shift={(current page.center)}]
+    \tikzstyle{Starburst} = [starburst, fill=c4st!10!c4bg, fill opacity=0.9, draw=black!100, thick, draw opacity=0.9, text width=5cm, minimum width=5cm, minimum height=3.09cm, text opacity=1, align=center];
+    \node[Starburst, at={(0,0)}] {Tree based repersentations\\improve correctness};
+    \draw [decorate, decoration={brace, amplitude=5pt}, very thick] (3.9,2.6) -- (4.8,2.6);
+    \node[star, star points=5, at={(2.25,2.6)}, star point ratio=0.45, fill=c4al, inner sep=0.08cm] {};
+\end{tikzpicture}
+}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Line Chart with TikZ}
+\pgfplotstableread{
+    label         lbl   st-van st-cd st-rmr
+    {253\\\%1}     19.58 27.56  89.97 38.00
+    {507\\\%2}     41.65 49.31  91.32 61.33
+    {1269\\\%5}    65.20 74.56  93.30 82.15
+    {2539\\\%10}   80.29 84.59  95.03 88.82
+    {5078\\\%20}   87.50 91.54  95.32 92.82
+    {12695\\\%50}  91.96 94.52  96.64 95.35
+    {25390\\\%100} 94.20 95.67  96.64 95.83
+}\data
+\begin{figure}
+\begin{tikzpicture}
+    \begin{axis}[
+        tick label style={font=\tiny},
+        xtick=data,
+        xticklabels from table={\data}{label},
+        xticklabel style={align=center},
+        ytick distance=20,
+        label style={font=\scriptsize},
+        xlabel={\#Training Samples},
+        ylabel={Tree Accuracy},
+        legend style={
+            font=\tiny,
+            draw=none,
+            fill=c4bg,
+        },
+        legend cell align={left},
+        legend pos={south east},
+        legend entries={
+            \textsc{LBL},
+            \textsc{ST-VAN},
+            \textsc{ST-RMR},
+            \textsc{ST-CD},
+        },
+        width=\textwidth,
+        height=0.618\textwidth,
+    ]
+    \addplot [draw=c4st, mark=o, thick] table [meta=label, x expr=\coordindex, y=lbl] {\data};
+    \addplot [draw=c4fg, mark=square, thick] table [meta=label, x expr=\coordindex, y=st-van] {\data};
+    \addplot [draw=c4al, mark=diamond, thick] table [meta=label, x expr=\coordindex, y=st-rmr] {\data};
+    \addplot [draw=c4eg, mark=triangle, thick] table [meta=label, x expr=\coordindex, y=st-cd] {\data};
+    \draw[draw=gray, dashed, ultra thin] (axis cs:\pgfkeysvalueof{/pgfplots/xmin}, 94.20) -- (axis cs:\pgfkeysvalueof{/pgfplots/xmax}, 94.20);
+    \end{axis}
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Wide Table in \alert{adjustwidth} Environment}
+\begin{adjustwidth}{-2cm}{-2cm}
+    \begin{table}
+        \begin{tabular}{|c|c|c|c|c|} \hline
+            SSSSSSS & AAAAAAA & TTTTTTT & OOOOOOO & RRRRRRR\\ \hline
+            AAAAAAA & RRRRRRR & EEEEEEE & PPPPPPP & OOOOOOO\\ \hline
+            TTTTTTT & EEEEEEE & NNNNNNN & EEEEEEE & TTTTTTT\\ \hline
+            OOOOOOO & PPPPPPP & EEEEEEE & RRRRRRR & AAAAAAA\\ \hline
+            RRRRRRR & OOOOOOO & TTTTTTT & AAAAAAA & SSSSSSS\\ \hline
+        \end{tabular}
+    \end{table}
+\end{adjustwidth}
+\end{frame}
+
+\section*{References}
+
+\begin{frame}[noframenumbering,plain]%[allowframebreaks]
+\frametitle{References}
+\footnotesize
+\bibliographystyle{amsalpha}
+\bibliography{ref.bib}
+\end{frame}
+
+\appendix
+
+\section*{Convex Optimization}
+
+\begin{frame}[t]
+\frametitle{Karush–Kuhn–Tucker Conditions}
+Nonlinear optimization problem\par\pause
+Necessary conditions
+\end{frame}
+
+\section*{Matrix Analysis}
+
+\begin{frame}
+\frametitle{Singular Value Decomposition}
+Statement of the theorem\par\pause
+\vspace{\baselineskip}
+Intuitive interpretations
+\end{frame}
+
+\end{document}

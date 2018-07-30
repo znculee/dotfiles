@@ -1,0 +1,61 @@
+{
+  "alfredtheme" : {
+    "result" : {
+      "textSpacing" : 4,
+      "subtext" : {
+        "size" : 11,
+        "colorSelected" : "#628E9BFF",
+        "font" : "Monaco",
+        "color" : "#356878FF"
+      },
+      "shortcut" : {
+        "size" : 13,
+        "colorSelected" : "#829496FF",
+        "font" : "Monaco",
+        "color" : "#829496FF"
+      },
+      "backgroundSelected" : "#003440FF",
+      "text" : {
+        "size" : 15,
+        "colorSelected" : "#628E9BFF",
+        "font" : "Monaco",
+        "color" : "#819395FF"
+      },
+      "iconPaddingHorizontal" : 7,
+      "paddingVertical" : 7,
+      "iconSize" : 24
+    },
+    "search" : {
+      "paddingVertical" : 0,
+      "background" : "#002733FF",
+      "spacing" : 3,
+      "text" : {
+        "size" : 25,
+        "colorSelected" : "#000000FF",
+        "font" : "Monaco",
+        "color" : "#829496FF"
+      },
+      "backgroundSelected" : "#B2D7FFFF"
+    },
+    "window" : {
+      "color" : "#002733FF",
+      "paddingHorizontal" : 3,
+      "width" : 560,
+      "borderPadding" : 0,
+      "borderColor" : "#002733FF",
+      "blur" : 0,
+      "roundness" : 3,
+      "paddingVertical" : 3
+    },
+    "credit" : "Xintong Li",
+    "separator" : {
+      "color" : "#FEFFFE00",
+      "thickness" : 0
+    },
+    "scrollbar" : {
+      "color" : "#00000019",
+      "thickness" : 0
+    },
+    "name" : "znculee"
+  }
+}

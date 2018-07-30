@@ -1,0 +1,52 @@
+#!/bin/bash
+#
+# Use fugitive to resolve git merge conflicts or check the edit to a file in a certain commit
+#
+# Tips for resolving git merge conflicts
+# - Use ]c and [c to jump between conflict markers
+# - The left pane is numbered 2 and the right pane is numbered 3 (you're in
+#   number 1). So use d2o or d3o to "obtain" from either 2 or 3. Remember with
+#   the mnemonic "Diff 2 Obtain" and "Diff 3 Obtain"
+
+usage="$(basename "$0") -- VI Git Diff
+Usage:
+  vigd [-c <commit>] <file>
+Options:
+  -h  show this help message
+  -c  <commit>
+"
+
+commit=0
+
+while getopts :hc: opt; do
+  case "${opt}" in
+    h)
+      echo "$usage"
+      exit 0
+      ;;
+    c)
+      commit=$OPTARG
+      ;;
+    ?)
+      echo "Invalid option: -$OPTARG"
+      echo "$usage"
+      exit 1
+      ;;
+  esac
+done
+
+shift $((OPTIND -1))
+file=$1
+
+if [[ $# -gt 1 ]]; then
+  echo "Too many positional arguments"
+  echo $@
+  echo "$usage"
+  exit 1
+fi
+
+if [[ "$commit" = "0" ]]; then
+  nvim -c "edit $file" -c "Gvdiffsplit!"
+else
+  nvim -c "Gedit $commit:./$file" -c "Gvdiffsplit!"
+fi

@@ -1,0 +1,32 @@
+#!/bin/bash
+
+file=$1
+line=$2
+nvr="/usr/local/bin/nvr"
+
+list=`$nvr --serverlist | grep "^/tmp/nvim|>"`
+if [ ! "$list" ]; then
+  exit 1
+fi
+tgt="/tmp/nvim|>"`echo ${file:1} | sed "s/\//~>/g"`
+maxlen=0
+while read cand ; do
+  ovlp=`printf "%s\n%s\n" "${cand}" "$tgt" | sed "N;s/^\(.*\).*\n\1.*$/\1/"`
+  ovlpn=`grep -o "~>" <<< $ovlp | wc -l`
+  if [ $ovlpn -gt $maxlen ]; then
+    servername=$cand
+    maxlen=$ovlpn
+  elif [ $ovlpn -eq $maxlen ]; then
+    if [ ${#cand} -lt ${#servername} ]; then
+      servername=$cand
+    fi
+  fi
+done < <(echo "$list")
+
+$nvr --servername $servername --remote-silent +$line $file --remote-send "zz"
+
+exec osascript << EOF
+  tell application "iTerm"
+    activate
+  end tell
+EOF

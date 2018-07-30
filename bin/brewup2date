@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#/usr/bin/find "$(brew --prefix)/Caskroom/"*'/.metadata' -type f -name '*.rb' -print0 | /usr/bin/xargs -0 /usr/bin/perl -i -0pe 's/depends_on macos: \[.*?\]//gsm;s/depends_on macos: .*//g'
+
+brew update
+brew upgrade
+brew upgrade --cask
+brew cleanup

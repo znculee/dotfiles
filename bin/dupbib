@@ -1,0 +1,22 @@
+#!/bin/bash
+
+message="Show the duplicated reference in bib file.\nUSAGE: dupbib ref.bib"
+
+dupbib(){
+    cat $1 | grep "^@" | sed "s/^.*{//g" | sed "s/,//g" | sort | uniq -d
+}
+
+export -f dupbib
+
+if [ $# -eq 0 ]; then
+    if [ -f "ref.bib" ]; then
+        watch -n 0.1 dupbib ref.bib
+    else
+        printf "$message"
+    fi
+elif [ $# -eq 1 ]; then
+    watch -n 0.1 dupbib $1
+else
+    printf "$message"
+    exit
+fi
