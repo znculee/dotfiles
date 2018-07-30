@@ -1,0 +1,31 @@
+[user]
+	name = Xintong Li
+	email = znculee@gmail.com
+	signingkey = D76599AF1A4C487C
+[core]
+	editor = /usr/local/bin/nvim
+[credential]
+	helper = store
+[merge]
+	tool = vimdiff
+[diff]
+    tool = vimdiff
+[color]
+	ui = true
+[alias]
+    st = status
+    ci = commit
+    co = checkout
+    br = branch
+    df = icdiff
+    dfc = icdiff --cached
+    lg = !git --no-pager log --graph --color | gitmojify | less -r
+    lgb = !git --no-pager log --branches --graph --color | gitmojify | less -r
+[format]
+    pretty = format:%Cred%h%C(yellow)%d%Creset %s %Cblue%an %Cgreen%cr%Creset
+[icdiff]
+    options = --line-numbers
+[commit]
+	template = ~/.gitmessage
+[pull]
+	rebase = true

@@ -1,0 +1,9 @@
+{
+    "imselect.enableStatusItem": false,
+    "imselect.enableFloating": false,
+    "python.linting.pylintArgs": [
+        "--generated-members=numpy.*, torch.*",
+        "--max-line-length=120",
+        "--disable=C0114,C0116,C0103,R0914,E0401"
+    ]
+}

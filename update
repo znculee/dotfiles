@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd $(dirname $0)
+
+git add -A
+git commit --amend -m ':tada:' -q
+git push -f -q --progress
+git reflog expire --expire-unreachable=now --all

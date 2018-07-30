@@ -1,0 +1,94 @@
+set nocompatible
+set noswapfile
+set encoding=utf-8
+set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
+let mapleader=';'
+let maplocalleader=','
+nnoremap <space> :
+xnoremap <space> :
+set history=1024
+set wildmode=longest,list,full
+set clipboard=unnamed
+syntax enable
+set background=dark
+set backspace=2    " indent,eol,start
+set tabstop=4      " 'ts' number of visual spaces per <Tab>
+set softtabstop=-1 " number of <Tab> spaces while editing, same as tabstop
+set shiftwidth=0   " namber of indent spaces, same as tabstop
+set expandtab      " tabs are spaces
+if &modifiable
+  set fileformat=unix
+endif
+set wrap
+set colorcolumn=120
+set textwidth=79 | set fo-=t | set fo-=c | set fo+=q
+au Filetype * setl fo-=t | setl fo-=c | setl fo+=q
+let s:textwidth_extended=0
+function! ToggleTextwidthExtended()
+  if s:textwidth_extended
+    set textwidth=79
+    let s:textwidth_extended=0
+  else
+    let &textwidth=&colorcolumn-1
+    let s:textwidth_extended=1
+  endif
+endfunction
+nnoremap tw :call ToggleTextwidthExtended()<bar>set tw?<cr>
+au Filetype text,markdown,tex :call ToggleTextwidthExtended() | setl lbr
+au Filetype text,markdown,tex,vim,sh,html,css setl ts=2
+au Filetype asm setl ts=8 | setl ft=nasm
+set t_Co=256              " number of colors
+set number                " 'nu' show line numbers
+set cursorline            " highlight current line
+filetype plugin indent on " detection:on plugin:on indent:on
+set showmatch             " highlight matching [{()}]
+set wildmenu              " visual autocomplete for command menu
+set vb t_vb=              " disable error bell
+set completeopt-=preview  " disable preview window
+set splitright            " put the new buffer on the right
+set guicursor=            " disable cursor-styling
+if !has('nvim')
+  let &t_ZH="\e[3m" | let &t_ZR="\e[23m"
+endif
+nnoremap <leader>. :cd %:p:h<bar>:pwd<cr>
+inoremap <c-h> <left>
+inoremap <c-j> <down>
+inoremap <c-k> <up>
+inoremap <c-l> <right>
+noremap \ ;
+noremap <bar> ,
+let s:essay_mode_enable=0
+function! ToggleEssayMode()
+  if s:essay_mode_enable
+    unmap j
+    unmap k
+    unmap 0
+    unmap $
+    let s:essay_mode_enable=0
+  else
+    nnoremap j gj
+    nnoremap k gk
+    nnoremap 0 g0
+    nnoremap $ g$
+    let s:essay_mode_enable=1
+  endif
+endfunction
+nnoremap gl :call ToggleEssayMode()<cr>
+nnoremap <m-q> @q
+nnoremap <m-w> @w
+nnoremap <c-j> :bn<cr>
+nnoremap <c-k> :bp<cr>
+set incsearch
+set hlsearch
+set ignorecase
+nnoremap <leader><space> :noh<cr>
+function! GetVisualSelection()
+  let raw_search=@"
+  let @/=substitute(escape(raw_search, '\/.*$^~[]'), "\n", '\\n', "g")
+endfunction
+xnoremap // ""y:call GetVisualSelection()<bar>:%s///gn<cr>
+if has('nvim')
+  set inccommand=nosplit
+endif
+nnoremap zs :let &spf=expand('%:p:h').'/en.utf-8.add'<bar>:setl spell!<cr>
+set diffopt=vertical,filler
