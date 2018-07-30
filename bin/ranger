@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+$HOMEBREW_BIN_PATH/ranger $@
+if [[ "$TMUX" ]]; then
+  tmux set-window-option -u automatic-rename
+fi

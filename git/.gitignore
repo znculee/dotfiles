@@ -1,0 +1,6 @@
+.DS_Store
+.ipynb_checkpoints
+.mypy_cache
+/.cache/clangd
+/.vim
+/.tmp

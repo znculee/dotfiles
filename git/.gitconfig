@@ -1,0 +1,45 @@
+[user]
+    name = Xintong Li
+    email = znculee@gmail.com
+    signingkey = D76599AF1A4C487C
+[core]
+    editor = /opt/homebrew/bin/nvim
+[credential]
+    helper = store
+    username = znculee
+[merge]
+    tool = nvimdiff
+[diff]
+    tool = nvimdiff
+[color]
+    ui = true
+[alias]
+    st = status
+    ci = commit
+    co = checkout
+    br = branch
+    sw = switch
+    swc = "!f() { git switch -c $(printf \"$1-%x\n\" $(date +%s)); }; f"
+    sh = show --stat
+    df = icdiff
+    dfc = icdiff --cached
+    dfno = diff --name-only
+    dfns = diff --name-status
+    lg = !git --no-pager log --graph --color --decorate --oneline | gitmojify | less -r
+    lga = !git --no-pager log --graph --color --decorate --oneline --all | gitmojify | less -r
+    fpr = "!f() { git fetch $1 pull/$2/head:pr$2; git switch pr$2; }; f"
+[format]
+    pretty = format:%Cred%h%C(yellow)%d%Creset %s %Cblue%an %Cgreen%cr%Creset
+[icdiff]
+    options = --line-numbers
+[commit]
+    template = ~/.gitmessage
+[pull]
+    rebase = true
+[init]
+    defaultBranch = main
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
