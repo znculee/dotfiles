@@ -1,0 +1,19 @@
+\documentclass[usletter, 10pt]{article}
+
+\usepackage{tikz}
+\usepackage[top=2cm, bottom=2cm, outer=0cm, inner=0cm]{geometry}
+
+\begin{document}
+\thispagestyle{empty}
+
+\begin{tikzpicture}[remember picture, overlay, shift={(current page.center)}]
+
+    \draw[step=1,black,very thin,opacity=.3] (current page.north west) grid (current page.south east);
+
+    \draw (0, 0) circle [radius=1cm];
+    \draw (5, 5) circle [radius=2cm];
+    \draw (current page.north west) to (0, 0);
+
+\end{tikzpicture}
+
+\end{document}
