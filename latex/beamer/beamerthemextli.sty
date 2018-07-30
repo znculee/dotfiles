@@ -1,0 +1,159 @@
+%                       ____
+%                      / __ )___  ____ _____ ___  ___  _____
+%                     / __  / _ \/ __ `/ __ `__ \/ _ \/ ___/
+%                    / /_/ /  __/ /_/ / / / / / /  __/ /
+%                   /_____/\___/\__,_/_/ /_/ /_/\___/_/
+% https://raw.githubusercontent.com/znculee/dotfiles/master/latex/beamer/beamerthemextli.sty
+%                 _  __ _       __                       __    _
+%                | |/ /(_)___  / /_____  ____  ____ _   / /   (_)
+%                |   // / __ \/ __/ __ \/ __ \/ __ `/  / /   / /
+%               /   |/ / / / / /_/ /_/ / / / / /_/ /  / /___/ /
+%              /_/|_/_/_/ /_/\__/\____/_/ /_/\__, /  /_____/_/
+%                                           /____/
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthemextli}
+
+\newif\ifdark\DeclareOption{dark}{\darktrue}
+\newif\ifnote\DeclareOption{note}{\notetrue}
+\newif\ifgrid\DeclareOption{grid}{\gridtrue}
+\newif\ifoutline\DeclareOption{outline}{\outlinetrue}
+\ProcessOptions\relax
+
+\RequirePackage{changepage}
+
+\RequirePackage{tikz}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{calc}
+\usetikzlibrary{shapes}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows.meta}
+
+\tikzset{
+    position/.style args={#1:#2 from #3}{
+        at=(#3.#1), anchor=#1+180, shift=(#1:#2)
+    }
+}
+
+\ifnote
+  \RequirePackage[draft]{pdfcomment}
+\else
+  \RequirePackage[final]{pdfcomment}
+\fi
+\newcommand{\pdfnote}[1]{\marginnote{\pdfcomment[icon=note]{#1}}}
+
+\setbeamercovered{transparent}
+\ifdark
+  \definecolor{c4st}{HTML}{f5f5f5}
+  \definecolor{c4bg}{HTML}{272727}
+  \definecolor{c4fg}{HTML}{d3d3d3}
+  \definecolor{c4al}{HTML}{fabc2e}
+  \definecolor{c4eg}{HTML}{93c572}
+  \definecolor{c4ct}{HTML}{fb9912}
+\else
+  \definecolor{c4st}{HTML}{2e589c}
+  \definecolor{c4bg}{HTML}{fafafa}
+  \definecolor{c4fg}{HTML}{000000}
+  \definecolor{c4al}{HTML}{c0362c}
+  \definecolor{c4eg}{HTML}{4c9141}
+  \definecolor{c4ct}{HTML}{5d8aa8}
+\fi
+\usecolortheme[named=c4st]{structure}
+\setbeamercolor{normal text}{fg=c4fg,bg=c4bg}
+\setbeamercolor{alerted text}{fg=c4al,bg=c4bg}
+\setbeamercolor{example text}{fg=c4eg,bg=c4bg}
+\setbeamercolor{bibliography entry author}{fg=c4fg,bg=c4bg}
+\setbeamercolor{bibliography entry title}{fg=c4fg,bg=c4bg}
+\setbeamercolor{bibliography entry location}{fg=c4fg,bg=c4bg}
+\setbeamercolor{bibliography entry note}{fg=c4fg,bg=c4bg}
+\setbeamercolor{bibliography item}{fg=c4ct,bg=c4bg}
+
+\ifgrid
+  \setbeamertemplate{background canvas}{
+    \begin{tikzpicture}[remember picture, overlay, shift={(current page.center)}]
+      \fill[color=c4bg] (0,0) rectangle (\paperwidth,\paperheight);
+      %\draw[step=1,c4fg,very thin,opacity=.3] (0,0) grid (\paperwidth,\paperheight);
+      \draw[step=1,c4fg,very thin,opacity=.3] (current page.north west) grid (current page.south east);
+    \end{tikzpicture}
+  }
+\else
+  \setbeamercolor{background canvas}{bg=c4bg}
+\fi
+
+\setbeamerfont{title}{series=\bfseries,size=\Large}
+\setbeamerfont{subtitle}{series=\bfseries,size=\normalsize}
+\setbeamerfont{footnote}{size=\tiny}
+\setbeamerfont{frametitle}{series=\bfseries,size=\large}
+\setbeamerfont{framesubtitle}{series=\mdseries,size=\small}
+
+\setbeamertemplate{bibliography item}[text]
+\setbeamertemplate{footline}{
+  \begin{beamercolorbox}
+    [ht=2.5ex,dp=1.125ex,leftskip=.25cm,rightskip=.25cm]{structure}
+    \tiny\insertsection\hfill\insertframenumber/\inserttotalframenumber
+  \end{beamercolorbox}
+  \vskip 0.15cm
+}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{frametitle}{
+  \begin{center}
+    \usebeamerfont{frametitle}\insertframetitle\par\vskip 0.05cm
+    \usebeamerfont{framesubtitle}\insertframesubtitle
+  \end{center}
+}
+\setbeamertemplate{itemize item}{$\bullet$}
+\setbeamertemplate{itemize subitem}{$\circ$}
+\setbeamertemplate{itemize subsubitem}[square]
+
+\ifoutline
+\AtBeginSection[]{
+  \begin{frame}[noframenumbering,plain]
+    \frametitle{Outline}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+\fi
+
+\let\oldcite\cite\renewcommand{\cite}[1]{{\color{c4ct}\tiny\oldcite{#1}}}
+\let\oldappendix\appendix\renewcommand\appendix{
+  \newcounter{frmnumappx}\setcounter{frmnumappx}{\value{framenumber}}
+  \newcounter{appendixnumber}\resetcounteronoverlays{appendixnumber}
+  \let\oldframe\frame\renewcommand\frame{\stepcounter{appendixnumber}\oldframe}
+  \setbeamertemplate{footline}{
+    \begin{beamercolorbox}
+      [ht=2.5ex,dp=1.125ex,leftskip=.25cm,rightskip=.25cm]{structure}
+      \tiny\insertsection\hfill\theappendixnumber
+    \end{beamercolorbox}
+    \vskip 0.15cm
+  }
+  \let\oldenddocument\enddocument\renewcommand\enddocument{
+    \addtocounter{frmnumappx}{-\value{framenumber}}
+    \addtocounter{framenumber}{\value{frmnumappx}}
+    \oldenddocument
+  }
+  \oldappendix
+}
+
+\setbeamercolor{block title alerted}{fg=c4bg,bg=c4al}
+\setbeamercolor{block body alerted}{bg=c4al!10!c4bg}
+\setbeamercolor{block title example}{fg=c4bg,bg=c4eg}
+\setbeamercolor{block body example}{bg=c4eg!10!c4bg}
+\setbeamertemplate{theorem begin}{%
+  \setbeamercolor{block title}{fg=c4bg,bg=c4st}%
+  \setbeamercolor{block body}{fg=c4fg,bg=c4st!10!c4bg}%
+  \begin{\inserttheoremblockenv}{%
+    \inserttheoremname
+    \ifx\inserttheoremaddition\@empty\else\ {\footnotesize(\inserttheoremaddition)}\fi%
+  }%
+}
+\setbeamertemplate{theorem end}{\end{\inserttheoremblockenv}}
+\AtBeginEnvironment{proof}{%
+  \setbeamercolor{block title}{fg=c4bg,bg=c4st}
+  \setbeamercolor{block body}{fg=c4fg,bg=c4st!10!c4bg}
+}
+
+\newcommand{\markerlessfootnote}[1]{%
+  \begingroup%
+  \let\thefootnote\relax\footnotetext{#1}%
+  \endgroup%
+}
