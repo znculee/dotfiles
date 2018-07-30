@@ -1,0 +1,132 @@
+" GENERAL
+  set nocompatible
+  set noswapfile
+  set encoding=utf-8
+  set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
+  let mapleader=';'
+  let maplocalleader=','
+  nnoremap <space> :
+  xnoremap <space> :
+  set history=1024
+  set wildmode=longest,list,full
+  set clipboard=unnamed
+
+" COLORS
+  syntax enable
+
+" STYLE
+  set backspace=2    " indent,eol,start
+  set tabstop=4      " 'ts' number of visual spaces per <Tab>
+  set softtabstop=-1 " number of <Tab> spaces while editing, same as tabstop
+  set shiftwidth=0   " namber of indent spaces, same as tabstop
+  set expandtab      " tabs are spaces
+  if &modifiable
+    set fileformat=unix
+  endif
+  set wrap
+  set breakindent
+  set textwidth=79
+  au BufEnter * set fo-=t fo-=c fo+=q
+  au Filetype text,markdown,tex,help,json setl cc= lbr
+  au Filetype text,markdown,gitcommit,vim,sh,html,css setl ts=2
+  au Filetype asm setl ts=8 ft=nasm
+
+" UI CONFIG
+  set t_Co=256              " number of colors
+  set number                " 'nu' show line numbers
+  set cursorline            " highlight current line
+  filetype plugin indent on " detection:on plugin:on indent:on
+  set showmatch             " highlight matching [{()}]
+  set wildmenu              " visual autocomplete for command menu
+  set vb t_vb=              " disable error bell
+  set completeopt-=preview  " disable preview window
+  set splitright            " put the new buffer on the right
+  set guicursor=            " disable cursor-styling
+  if !has('nvim')
+    let &t_ZH="\e[3m" | let &t_ZR="\e[23m"
+  endif
+
+" EDITING
+  nnoremap <leader>. :cd %:p:h<bar>:pwd<cr>
+
+" MOTION
+  inoremap <c-h> <left>
+  inoremap <c-j> <down>
+  inoremap <c-k> <up>
+  inoremap <c-l> <right>
+  noremap \ ;
+  noremap <bar> ,
+  let s:essay_mode_enable=0
+  function! ToggleEssayMode()
+    if s:essay_mode_enable
+      unmap j
+      unmap k
+      unmap 0
+      unmap $
+      let s:essay_mode_enable=0
+    else
+      nnoremap j gj
+      nnoremap k gk
+      nnoremap 0 g0
+      nnoremap $ g$
+      let s:essay_mode_enable=1
+    endif
+  endfunction
+  nnoremap <silent> gl :call ToggleEssayMode()<cr>
+
+" REPEAT
+  nnoremap <m-q> @q
+  nnoremap <m-w> @w
+
+" WINDOWS
+  nnoremap <silent> <c-j> :bn<cr>
+  nnoremap <silent> <c-k> :bp<cr>
+
+" SEARCHING
+  set incsearch
+  set hlsearch
+  set ignorecase
+  nnoremap <silent> <leader><space> :noh<cr>
+  function! GetVisualSelection()
+    let raw_search=@"
+    let @/=substitute(escape(raw_search, '\/.*$^~[]'), "\n", '\\n', "g")
+  endfunction
+  xnoremap // ""y:call GetVisualSelection()<bar>:%s///gn<cr>
+  if has('nvim')
+    set inccommand=nosplit
+  endif
+
+" SPELL
+  nnoremap <silent> zs :let &spf=expand('%:p:h').'/en.utf-8.add'<bar>:setl spell!<cr>
+
+" DIFF
+  set diffopt=vertical,filler
+
+" MOUSE
+  set mouse=
+  function! ToggleMouse()
+    if &mouse == 'a'
+      set mouse=
+    else
+      set mouse=a
+    endif
+  endfunc
+  nnoremap <leader>m :call ToggleMouse()<bar>set mouse?<cr>
+
+" META KEY
+  if !has('nvim')
+    function! s:metacode(key)
+      execute "set <m-".a:key.">=\e".a:key
+    endfunction
+    for i in range(10)
+      call s:metacode(nr2char(char2nr('0')+i))
+    endfor
+    for i in range(26)
+      call s:metacode(nr2char(char2nr('a')+i))
+      call s:metacode(nr2char(char2nr('A')+i))
+    endfor
+    for c in [',','.','/',';','{','}','?',':','-','_']
+      call s:metacode(c)
+    endfor
+    set ttimeoutlen=50
+  endif

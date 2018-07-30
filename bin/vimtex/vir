@@ -1,0 +1,9 @@
+#!/bin/bash
+
+current_path=`pwd`
+if [[ $current_path == *"~>"* ]]; then
+  echo "\"~>\" is not allowed in path!"
+  exit 1
+fi
+servername=`echo ${current_path:1} | sed "s/\//~>/g"`
+nvr -s --servername "/tmp/nvim|>${servername}~>" $*
